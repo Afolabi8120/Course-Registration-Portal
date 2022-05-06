@@ -30,6 +30,7 @@
         <a href="semester.php"><li><i class="fa fa-plus"></i> Semester/Session</li></a>
         <a href="profile.php"><li><i class="fa fa-user"></i> Profile</li> </a>
         <a href="report.php"><li><i class="fa fa-folder"></i> Student Records</li> </a>
+        <a href="registered_courses.php"><li><i class="fa fa-print"></i> All Registered Courses</li> </a>
         <a href="create_user.php"><li><i class="fa fa-lock"></i> Create Account</li> </a>
         <a href="logout.php"><li><i class="fa fa-sign-out"></i> Logout</li> </a>
     </ul>

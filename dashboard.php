@@ -52,12 +52,13 @@
                                                 <th># </th>
                                                 <th>Semester </th>
                                                 <th>Session</th>
+                                                <th>Level</th>
                                                 <th>Action </th>
                                             </tr>
                                         </thead>
                                         <?php
                                             $i = 0;
-                                            $sql = "SELECT semester, session FROM tbl_submitted_courses WHERE matricno = '{$_SESSION['matricno']}' AND status = 'Submitted' GROUP BY semester, session ORDER BY semester, session ASC ";
+                                            $sql = "SELECT semester, session,level FROM tbl_submitted_courses WHERE matricno = '{$_SESSION['matricno']}' AND status = 'Submitted' GROUP BY semester, session ORDER BY semester, session ASC ";
                                             $query_result = mysqli_query($conn, $sql);
                                             $result = mysqli_num_rows($query_result);
                                             if($result > 0){
@@ -69,8 +70,9 @@
                                                 <td><?php echo $i; ?></td>
                                                 <td><?php echo $rows['semester']; ?></td>
                                                 <td><?php echo $rows['session']; ?></td>
+                                                <td><?php echo $rows['level']; ?></td>
                                                 <td>
-                                                    <a class="btn btn-info btn-sm" target="_blank" href="print.php?sid=<?php echo $_SESSION['matricno']; ?>&session=<?php echo $rows['session']; ?>&semester=<?php echo $rows['semester']; ?>"><span style="color: black;"><i class="fa fa-print"></i></span></a>
+                                                    <a class="btn btn-info btn-sm" target="_blank" href="print.php?sid=<?php echo $_SESSION['matricno']; ?>&session=<?php echo $rows['session']; ?>&semester=<?php echo $rows['semester']; ?>&level=<?php echo $rows['level']; ?>&key=<?php echo $_SESSION['user_session']; ?>"><span style="color: black;"><i class="fa fa-print"></i></span></a>
                                                 </td>
                                             </tr>
                                         </tbody>

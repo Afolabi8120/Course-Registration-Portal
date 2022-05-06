@@ -5,7 +5,7 @@
 
     if(isset($_SESSION['username'])){
         global $stu_id, $stu_fullname, $stu_gender, $stu_level,$stu_department,$stu_faculty,$stu_email,$stu_program,$stu_image,$stu_status;
-        if(isset($_GET['id'])){
+        if(isset($_GET['id']) AND $_GET['key'] == $_SESSION['user_session']){
             $id = $_GET['id'];
             $sql = "SELECT * FROM tblstudent WHERE matricno = '$id' ";
             $query_result = mysqli_query($conn, $sql);
@@ -23,6 +23,8 @@
                     $stu_image = $row['image'];
                     $stu_status = $row['status'];
                 }
+            }else{
+                RedirectTo('404.php');
             }
         }elseif (isset($_POST['btn_disable'])) {
             $student_id = $_POST['student_id'];
@@ -103,6 +105,7 @@
                     <div class="gist-status">
                         <h4>Student Information</h4>
                         <hr>
+                        <h4><?php echo $stu_id; ?></h4>
                         <h4><?php echo $stu_fullname; ?></h4>
                         <h5><?php echo $stu_faculty; ?></h5>
                         <h5><?php echo $stu_department; ?></h5>

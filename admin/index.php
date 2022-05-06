@@ -25,15 +25,22 @@
                   $_SESSION['phone'] = $row['phone'];
                   $_SESSION['status'] = $row['status'];
                   $_SESSION['picture'] = $row['picture'];
+                  session_regenerate_id();
+                  $_SESSION['user_session'] = session_id();
                 }
-                if(password_verify($password, $fetchedpassword))
-                {
-                  RedirectTo('dashboard.php');
+
+                if($_SESSION['status'] == "In-active"){
+                  $_SESSION['ErrorMessage'] = "Your account has been deactivated, please contact the admin to resolve the issue. Thank You!";
                 }else{
-                  $_SESSION['ErrorMessage'] = "Username/Password is incorrect";
+                  if(password_verify($password, $fetchedpassword))
+                  {
+                    RedirectTo('dashboard.php');
+                  }else{
+                    $_SESSION['ErrorMessage'] = "Username/Password is incorrect";
+                  }
                 }
             }else{
-                $_SESSION['ErrorMessage'] = "Your account has been deactivated, please contact the admin to resolve the issue. Thank You!";
+                $_SESSION['ErrorMessage'] = "Username/Password is incorrect";
             }
         }
     }

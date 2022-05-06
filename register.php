@@ -209,11 +209,6 @@
                         <label for="cpassword">Confirm Password</label>
                         <input type="password" name="cpassword" id="cpassword" class="form-control">
                       <span class="confirmRequiredMsg">Please confirm your password.</span><span class="confirmInvalidMsg">The password does not match your previous password.</span></span> </div>
-                      <div class="form-body">
-                        <span id="sprycheckbox1">
-                        <input type="checkbox" name="policy" id="policy">
-                        <label for="policy">Agress to our Policy</label>
-                      <span class="checkboxRequiredMsg">Please make sure you agree to our policy.</span></span> </div>
                       
                     <div class="form-body">
                         <button type="submit" class="form-control btn btn-sm btn-primary" name="btn_register"><i class="fa fa-user-plus"></i> Sign up now</button>

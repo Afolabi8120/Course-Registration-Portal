@@ -14,8 +14,8 @@
                 $_SESSION['ses'] = $session;
             }
         }else{
-            $_SESSION['sem'] = "";
-            $_SESSION['ses'] = "";
+            $_SESSION['sem'] = "No Semester Set";
+            $_SESSION['ses'] = "No Session Set";
         }
 
         if(isset($_POST['btn_add_course'])){
@@ -43,7 +43,7 @@
             if($result2 > 0){
                 $_SESSION['ErrorMessage'] = $c_code . " has been submitted already";
             }else{
-                $sql3 = "INSERT INTO tbl_submitted_courses (course_code,title,unit,grade,session,semester,matricno,level) VALUES('$c_code','$c_title','$c_unit','$c_grade','$c_session','$c_semester','$stu_matricno','$stu_level') ";
+                $sql3 = "INSERT INTO tbl_submitted_courses (course_code,title,unit,grade,session,semester,matricno,level,department,program) VALUES('$c_code','$c_title','$c_unit','$c_grade','$c_session','$c_semester','$stu_matricno','$stu_level','{$_SESSION['department']}','{$_SESSION['program']}') ";
                 $query_result3 = mysqli_query($conn, $sql3);
 
                 if($query_result3){
@@ -214,6 +214,7 @@
                                     </table>
                                 </div>
 
+                                <!-- Rerun Courses 
                                 <small><p style="color: red; font-weight: bold;">NOTE: Only use this field, if you rerun a course.</p></small>
                                 <div class="table-responsive">
                                     <table class="table" style="color: #999">
@@ -236,7 +237,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -316,9 +317,22 @@
                                         ?>
                                     </table>
                                 </div>
-                                <form action="courses.php" method="POST">
-                                    <button type="submit" name="btn_final_submit" class="btn btn-lg btn-primary" onclick="return confirm('Submit Course?');">Submit</button>
-                                </form>
+                                <?php
+                                    $sql = "SELECT * FROM tbl_submitted_courses WHERE session='{$_SESSION['ses']}' AND semester='{$_SESSION['sem']}' AND matricno='{$_SESSION['matricno']}' AND status='Submitted' ";
+                                    $result_query = mysqli_query($conn, $sql);
+                                    $result = mysqli_num_rows($result_query);
+                                    if($result > 0){
+                                ?>
+                                    <p class="text-center">You have submitted the courses for this semester/session</p>
+                                <?php
+                                    }else{
+                                ?>
+                                    <form action="courses.php" method="POST">
+                                        <button type="submit" name="btn_final_submit" class="btn btn-lg btn-primary" onclick="return confirm('Submit Course?');">Submit</button>
+                                    </form>
+                                <?php
+                                    }
+                                ?>
                             </div>
                         </div>
                     </div>

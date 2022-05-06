@@ -4,6 +4,9 @@
     include_once('includes/redirect.php');
 
     if(isset($_SESSION['matricno'])){
+    	if($_GET['sid'] != $_SESSION['matricno'] AND $_GET['key'] == $_SESSION['user_session']){
+			RedirectTo('dashboard.php');
+    	}
 
     }else{
         RedirectTo('index.php');
@@ -30,11 +33,15 @@
 	.col-center {
 		text-align: center;
 	}
+	@media print {
+          .btn-print {
+            display:none !important;
+		  }
 </style>
 <body>
 	<div class="container-fluid">
 		<center>
-			<table border="1">
+			<table border="1" cellspacing="0" cellpadding="10px">
 			<thead style="padding: 0;">
 				<tr>
 					<th><img src="images/pic/school_logo.png" alt="School Logo" width="70px" height="80px"></th>
@@ -47,6 +54,7 @@
 				$matric = $_GET['sid'];
 				$session = $_GET['session'];
 				$semester = $_GET['semester'];
+				$level = $_GET['level'];
 				
                 $sql = "SELECT * FROM vwprint WHERE matricno = '$matric' AND session = '$session' AND semester = '$semester' AND status = 'Submitted' ";
                 $query_result = mysqli_query($conn, $sql);
@@ -55,7 +63,7 @@
                     while($rows = mysqli_fetch_array($query_result)){
                     	$matricno = $rows['matricno'];
                     	$fullname = $rows['surname']." ".$rows['othername'];
-                    	$level = $rows['level'];
+                    	$level = $level;
                     	$session_ = $rows['session'];
                     	$semester_ = $rows['semester'];
                     	$program = $rows['program'];
@@ -63,7 +71,9 @@
                     	$faculty = $rows['faculty'];
                     	$picture = $rows['image'];
                     }
-                }
+                }else{
+                	RedirectTo('404.php');
+            	}
             }
             ?>
 			<tbody>
@@ -132,7 +142,7 @@
 		            }
 		        ?>
 			    <tr>
-			        <td colspan="3" style="text-align: right;">Total Unit registered</td>
+			        <td colspan="3" style="text-align: right;">Total Unit Registered</td>
 			        <td>
 			        	<strong>
 			        		<?php
@@ -160,7 +170,9 @@
 			    		
 			    ?>
 			</tbody>		
-		</table></center>
+		</table>
+	</center>
+		<input type="submit" name="" value="Print" class="btn btn-primary btn-print" onclick="window.print();">
 	</div>
 	
 </body>

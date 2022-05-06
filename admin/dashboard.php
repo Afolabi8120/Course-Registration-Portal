@@ -113,7 +113,7 @@
                                         while($row = mysqli_fetch_array($query_result)){
                             ?>
                             <div class="col-md-2">
-                                <a  href="view_profile.php?id=<?php echo $row['matricno']; ?>&key=<?php echo uniqid(); ?>">
+                                <a  href="view_profile.php?id=<?php echo $row['matricno']; ?>&key=<?php echo $_SESSION['user_session']; ?>">
                                     <div class="thumbnaili" style="border: none;"><img src="../images/profile_pic/<?php echo $row['image']; ?>" class="img-circle"  width="80" height="80">
                                         <div class="caption">
                                             <h5 class="text-center"><?php echo $row['surname'] ." ". $row['othername']; ?></h5>

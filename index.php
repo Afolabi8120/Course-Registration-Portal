@@ -13,7 +13,7 @@
         if(empty($matric_no) || empty($password)){
             $_SESSION['ErrorMessage'] = "All fields are required";
         }else{
-            $sql = "SELECT * FROM tblstudent WHERE matricno = '$matric_no' AND status = 'Active' ";
+            $sql = "SELECT * FROM tblstudent WHERE matricno = '$matric_no' ";
             $query_result = mysqli_query($conn, $sql);
             $result = mysqli_num_rows($query_result);
             if($result > 0){
@@ -28,16 +28,23 @@
                   $_SESSION['program'] = $row['program'];
                   $_SESSION['email'] = $row['email'];
                   $_SESSION['picture'] = $row['image'];
+                  $_SESSION['status'] = $row['status'];
+                  session_regenerate_id();
+                  $_SESSION['user_session'] = session_id();
                 }
 
-                if(password_verify($password, $_fetchedpassword))
-                {
-                  RedirectTo('dashboard.php');
+                if($_SESSION['status'] == "Active"){
+                  if(password_verify($password, $_fetchedpassword))
+                  {
+                    RedirectTo('dashboard.php');
+                  }else{
+                    $_SESSION['ErrorMessage'] = "Matric No/Password is incorrect";
+                  }
                 }else{
-                  $_SESSION['ErrorMessage'] = "Matric No/Password is incorrect";
+                  $_SESSION['ErrorMessage'] = "Your account has been deactivated, please contact the admin to resolve the issue. Thank You!";
                 }
             }else{
-                $_SESSION['ErrorMessage'] = "Your account has been deactivated, please contact the admin to resolve the issue. Thank You!";
+                $_SESSION['ErrorMessage'] = "Matric No/Password is incorrect!";
             }
         }
     }
@@ -60,13 +67,14 @@
     <div class="container">
           <div class="row">
               <div class="col-md-8 col-md-offset-2">
+                  <?php
+                      echo ErrorMessage();
+                      echo SuccessMessage();
+                  ?>
                   <div class="panel">
-                    <?php
-                        echo ErrorMessage();
-                        echo SuccessMessage();
-                    ?>
-                      <div class="panel-header">
-           	              <h4 class="panel-heading"><i class="fa fa-sign-in"></i> Login</h4>
+                      <div class="panel-header text-center">
+                          <img class="status-image" src="images/pic/school_logo.png" width="80px" height="80px" style="margin-bottom: 5px;">
+           	              <h4 class="panel-heading"><marquee>Welcome to Course Registration Portal</marquee><br> <small style="color: white;"><b>Please Login to Access your Account</b></small></h4>
                       </div> 
                       <form action="index.php" method="POST">
                         <div class="panel-body">
@@ -94,6 +102,7 @@
                           <a href="forget_password.php" class="btn btn-sm btn-warning">Forget Password?</a>
                           <a href="register.php" class="pull-right btn btn-sm btn-success">Create An Account</a>
                         </div>
+                        <h5 class="panel-heading"><marquee>Contact <span style="color:red;font-weight: bold;">coursereg@gmail.com</span> for any complain</marquee></h5>
                       </div>
                   </div>
               </div>

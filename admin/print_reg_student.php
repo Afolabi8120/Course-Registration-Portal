@@ -4,27 +4,20 @@
     include_once('includes/redirect.php');
 
     if(isset($_SESSION['username'])){
-        if(isset($_POST['btn_remove_student'])){
-            $id = $_POST['s_id'];
-
-            $id = mysqli_real_escape_string($conn, $id);
-
-            $sql = "DELETE FROM tblstudent WHERE matricno='$id' ";
-            $query_result = mysqli_query($conn, $sql);
-
-            if($query_result){
-                $_SESSION['SuccessMessage'] = "Student Account has been removed successfully";
-            }else{
-                $_SESSION['ErrorMessage'] = "Failed to remove Student Account";
-            }
-        }
+        
     }else{
         RedirectTo('index.php');
     }
 ?>
 <!DOCTYPE html>
 <html>
-
+<style type="text/css">
+    @media print {
+        .btn-print {
+            display: none !important;
+        }
+    }
+</style>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,19 +32,17 @@
     <section class="container-wrap">
         <div class="container wrap">
             <div class="row">
-                <div class="col-md-4 col">
-                   <?php include_once('includes/leftside.php') ?>
-                </div>
 
-                <!-- Level Record -->
-                <div class="col-md-8 col">
-                    <?php
-                      echo ErrorMessage();
-                      echo SuccessMessage();
-                    ?>
+                <div class="col-md-12 col">
                     <div class="gist-status">
                         <div class="row" style="margin: 0px;">
-                            <h4>All Student List <small><span class="pull-right"><button type="submit" name="download" class="btn btn-primary btn-sm" ><i class="fa fa-eye"></i></button></span></small> </h4>
+                            <h5 class="text-center">Department: <strong><?php echo $_SESSION['department'] ?> DEPARTMENT </strong></h5>
+                            <h6 class="text-center">Course Code: <strong><?php echo $_SESSION['course_code']; ?></strong></h6>
+                            <h6 class="text-center">Level: <strong><?php echo $_SESSION['level']; ?></strong></h6>
+                            <h6 class="text-center">Program: <strong><?php echo $_SESSION['program']; ?></strong></h6>
+                            <br>
+                            <input style="margin-top: 5px;" class="btn btn-primary btn-print" type="submit" onclick="window.print();" value="Print">
+                            <a href="registered_courses.php" style="margin-top: 5px;" class="btn btn-danger btn-print" type="submit">Back</a>
                             <hr>
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -63,15 +54,13 @@
                                                 <th>Full Name </th>
                                                 <th>Level </th>
                                                 <th>Program </th>
-                                                <th>Faculty</th>
                                                 <th>Department </th>
                                                 <th>Gender</th>
-                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <?php
                                             $i = 0;
-                                            $sql = "SELECT * FROM tblstudent ORDER BY surname, level, program ASC";
+                                            $sql = "SELECT c.matricno,s.surname,s.othername,s.level,s.program,s.gender,s.department FROM tbl_submitted_courses AS c INNER JOIN tblstudent AS s ON c.matricno = s.matricno WHERE c.department = '{$_SESSION['department']}' AND c.course_code = '{$_SESSION['course_code']}' AND c.level = '{$_SESSION['level']}' AND c.program = '{$_SESSION['program']}'";
                                             $query_result = mysqli_query($conn, $sql);
                                             $result = mysqli_num_rows($query_result);
                                             if($result > 0){
@@ -85,15 +74,8 @@
                                                 <td><?php echo $row['surname']." ".$row['othername']; ?></td>
                                                 <td><?php echo $row['level']; ?></td>
                                                 <td><?php echo $row['program']; ?></td>
-                                                <td><?php echo $row['faculty']; ?></td>
                                                 <td><?php echo $row['department']; ?></td>
                                                 <td><?php echo $row['gender']; ?></td>
-                                                <td>
-                                                    <form method="POST">
-                                                        <input type="hidden" name="s_id" value="<?php echo $row['matricno']; ?>">
-                                                        <button type="submit" name="btn_remove_student" class="btn btn-sm btn-danger" onclick="return confirm('Remove this Account?');"><i class="fa fa-times"></i></button>
-                                                    </form>
-                                                </td>
                                             </tr>
                                         <?php
                                             }
